@@ -40,16 +40,16 @@ static NSString * const TFHppleTextNodeName            = @"text";
 
 @interface TFHppleElement ()
 {    
-    NSDictionary * node;
-    __unsafe_unretained TFHppleElement *parent;
+    NSDictionary *node;
 }
 
-@property (nonatomic, unsafe_unretained, readwrite) TFHppleElement *parent;
+@property (nonatomic, weak, readwrite) TFHppleElement *parent;
 
 @end
 
+
+
 @implementation TFHppleElement
-@synthesize parent;
 
 
 - (id) initWithNode:(NSDictionary *) theNode
@@ -89,7 +89,7 @@ static NSString * const TFHppleTextNodeName            = @"text";
   NSMutableArray *children = [NSMutableArray array];
   for (NSDictionary *child in [node objectForKey:TFHppleNodeChildrenKey]) {
       TFHppleElement *element = [TFHppleElement hppleElementWithNode:child];
-      element.parent = self;
+      [element setParent:self];
       [children addObject:element];
   }
   return children;
