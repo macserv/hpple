@@ -44,7 +44,6 @@ static NSString * const TFHppleTextNodeName            = @"text";
     NSDictionary * node;
     BOOL isXML;
     NSString *encoding;
-    __unsafe_unretained TFHppleElement *parent;
 }
 
 @property (nonatomic, weak, readwrite) TFHppleElement *parent;
@@ -113,15 +112,22 @@ static NSString * const TFHppleTextNodeName            = @"text";
 
 - (NSDictionary *) attributes
 {
-  NSMutableDictionary * translatedAttributes = [NSMutableDictionary dictionary];
-  for (NSDictionary * attributeDict in [node objectForKey:TFHppleNodeAttributeArrayKey]) {
-      if ([attributeDict objectForKey:TFHppleNodeContentKey] && [attributeDict objectForKey:TFHppleNodeAttributeNameKey]) {
-          [translatedAttributes setObject:[attributeDict objectForKey:TFHppleNodeContentKey]
-                                   forKey:[attributeDict objectForKey:TFHppleNodeAttributeNameKey]];
-      }
-  }
-  return translatedAttributes;
+    NSMutableDictionary * translatedAttributes = [NSMutableDictionary dictionary];
+    
+    for ( NSDictionary *attributeDict in [node objectForKey:TFHppleNodeAttributeArrayKey] )
+    {
+        NSString *nodeContentKey       = [attributeDict objectForKey:TFHppleNodeContentKey];
+        NSString *nodeAttributeNameKey = [attributeDict objectForKey:TFHppleNodeAttributeNameKey];
+        
+        if ( nodeContentKey && nodeAttributeNameKey )
+        {
+            [translatedAttributes setObject:nodeContentKey forKey:nodeAttributeNameKey];
+        }
+    }
+    
+    return translatedAttributes;
 }
+
 
 - (NSString *) objectForKey:(NSString *) theKey
 {

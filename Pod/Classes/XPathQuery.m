@@ -8,11 +8,22 @@
 
 #import "XPathQuery.h"
 
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreserved-id-macro"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wauto-import"
+
 #import <libxml/tree.h>
 #import <libxml/parser.h>
 #import <libxml/HTMLparser.h>
 #import <libxml/xpath.h>
 #import <libxml/xpathInternals.h>
+
+#pragma clang diagnostic pop
+#pragma clang diagnostic pop
+
+
 
 NSDictionary *DictionaryForNode(xmlNodePtr currentNode, NSMutableDictionary *parentResult,BOOL parentContent);
 NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query);
@@ -124,7 +135,7 @@ NSArray *PerformXPathQuery(xmlDocPtr doc, NSString *query)
     }
 
     /* Evaluate xpath expression */
-    xpathObj = xmlXPathEvalExpression((xmlChar *)[query cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
+    xpathObj = xmlXPathEvalExpression((const xmlChar *)[query cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
     if(xpathObj == NULL) {
         NSLog(@"Unable to evaluate XPath.");
         xmlXPathFreeContext(xpathCtx);
